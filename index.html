@@ -680,6 +680,13 @@
   var navSections = navLinks.map(function(link){
     return document.getElementById(link.getAttribute('data-nav-target'));
   });
+  function setActiveNav(activeIndex) {
+    for (var l = 0; l < navLinks.length; l++) {
+      navLinks[l].classList.toggle('is-active', l === activeIndex);
+      if (l === activeIndex) navLinks[l].setAttribute('aria-current', 'location');
+      else navLinks[l].removeAttribute('aria-current');
+    }
+  }
   function updateActiveNav() {
     var marker = window.scrollY + 96;
     var activeIndex = 0;
@@ -689,11 +696,23 @@
     if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
       activeIndex = navLinks.length - 1;
     }
-    for (var l = 0; l < navLinks.length; l++) {
-      navLinks[l].classList.toggle('is-active', l === activeIndex);
-      if (l === activeIndex) navLinks[l].setAttribute('aria-current', 'location');
-      else navLinks[l].removeAttribute('aria-current');
-    }
+    setActiveNav(activeIndex);
+  }
+  for (var nli = 0; nli < navLinks.length; nli++) {
+    (function(index){
+      navLinks[index].addEventListener('click', function(event){
+        var target = navSections[index];
+        if (!target) return;
+        event.preventDefault();
+        history.replaceState(null, '', '#' + target.id);
+        setActiveNav(index);
+        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        window.setTimeout(function(){
+          target.scrollIntoView({ behavior: 'auto', block: 'start' });
+          updateActiveNav();
+        }, 1200);
+      });
+    })(nli);
   }
   window.addEventListener('scroll', updateActiveNav, { passive: true });
   updateActiveNav();
