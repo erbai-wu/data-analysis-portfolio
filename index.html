@@ -173,6 +173,34 @@
   .case-card .case-link:hover { gap: 10px; }
   .case-card .case-link svg { width: 14px; height: 14px; }
 
+  .case-pagination {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 28px;
+  }
+  .case-pagination button {
+    min-width: 40px; height: 40px; padding: 0 14px;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--card); color: var(--text-secondary);
+    font: inherit; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: border-color .15s, color .15s, background .15s;
+  }
+  .case-pagination button:hover:not(:disabled) {
+    border-color: var(--accent); color: var(--accent);
+  }
+  .case-pagination button[aria-current="page"] {
+    border-color: var(--accent); background: var(--accent); color: #fff;
+  }
+  .case-pagination button:disabled { opacity: .4; cursor: not-allowed; }
+  .case-page-numbers { display: flex; gap: 8px; }
+  .case-page-status {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  @media (max-width: 480px) {
+    .case-pagination { gap: 6px; }
+    .case-pagination button { min-width: 36px; height: 36px; padding: 0 10px; }
+  }
+
   .case-card.full-width {
     grid-column: span 2;
   }
@@ -520,6 +548,12 @@
     </div>
 
   </div>
+  <nav class="case-pagination" id="case-pagination" aria-label="分析案例翻页" hidden>
+    <button type="button" id="case-prev" aria-label="上一页">上一页</button>
+    <span class="case-page-numbers" id="case-page-numbers"></span>
+    <button type="button" id="case-next" aria-label="下一页">下一页</button>
+    <span class="case-page-status" id="case-page-status" aria-live="polite"></span>
+  </nav>
 </section>
 
 <!-- FOOTER -->
@@ -544,6 +578,50 @@
   }
   var hi = document.getElementById('hero-industry-count');
   if (hi) hi.textContent = cats.size;
+
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.case-card'));
+  var pageSize = 6;
+  var pageCount = Math.ceil(cards.length / pageSize);
+  var currentPage = 1;
+  var pagination = document.getElementById('case-pagination');
+  var pageNumbers = document.getElementById('case-page-numbers');
+  var prev = document.getElementById('case-prev');
+  var next = document.getElementById('case-next');
+  var status = document.getElementById('case-page-status');
+
+  function showPage(page) {
+    currentPage = Math.max(1, Math.min(page, pageCount));
+    for (var j = 0; j < cards.length; j++) {
+      cards[j].hidden = Math.floor(j / pageSize) + 1 !== currentPage;
+    }
+    var buttons = pageNumbers.querySelectorAll('button');
+    for (var k = 0; k < buttons.length; k++) {
+      var active = Number(buttons[k].getAttribute('data-page')) === currentPage;
+      if (active) buttons[k].setAttribute('aria-current', 'page');
+      else buttons[k].removeAttribute('aria-current');
+    }
+    prev.disabled = currentPage === 1;
+    next.disabled = currentPage === pageCount;
+    status.textContent = '第 ' + currentPage + ' 页，共 ' + pageCount + ' 页';
+  }
+
+  if (pageCount > 1) {
+    pagination.hidden = false;
+    for (var p = 1; p <= pageCount; p++) {
+      var pageButton = document.createElement('button');
+      pageButton.type = 'button';
+      pageButton.textContent = p;
+      pageButton.setAttribute('data-page', p);
+      pageButton.setAttribute('aria-label', '第 ' + p + ' 页');
+      pageButton.addEventListener('click', function(){
+        showPage(Number(this.getAttribute('data-page')));
+      });
+      pageNumbers.appendChild(pageButton);
+    }
+    prev.addEventListener('click', function(){ showPage(currentPage - 1); });
+    next.addEventListener('click', function(){ showPage(currentPage + 1); });
+    showPage(1);
+  }
 })();
 </script>
 
