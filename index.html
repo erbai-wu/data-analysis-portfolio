@@ -99,11 +99,12 @@ h2{font-weight:700}.cover-copy h2{font-weight:800}.cover-copy h2 span+span{font-
 @media(max-width:800px){.bookmark:not(.cover-tab) .label{font-size:12px}}
 @media(max-width:800px){.book>.signature{--signature-inset:10px;top:-44px;gap:12px}.signature p{text-align:right}}
 @media(max-width:480px){.book>.signature{--signature-inset:0px;top:-46px;gap:8px}.signature h1{font-size:15px}.signature p{font-size:9px;max-width:155px}.cover-copy h2{font-size:31px;line-height:1.4}.reports-spread .report-tally{grid-row:1/3}}
-.back-to-top{position:absolute;top:16px;right:18px;width:36px;height:36px;z-index:2;border-radius:50%;background:#34343480;color:#fff;border:1px solid #48484830;box-shadow:0 2px 6px #0000000d}
+.back-to-top{position:absolute;top:auto;bottom:64px;right:18px;width:36px;height:36px;z-index:5;border-radius:50%;background:#34343480;color:#fff;border:1px solid #48484830;box-shadow:0 2px 6px #0000000d}
 .back-to-top:hover{background:#343434b3;color:#fff;border-color:#48484860}
 .back-to-top:focus-visible{outline:2px solid #656565;outline-offset:3px}
-.back-to-top[data-tip]:hover:after,.back-to-top[data-tip]:focus-visible:after{content:attr(data-tip);position:absolute;top:42px;bottom:auto;right:0;white-space:nowrap;font-size:11px;background:#343434;color:white;padding:6px 8px;border-radius:4px}
-@media(max-width:800px){.back-to-top{top:12px;right:12px;width:40px;height:40px}}
+.back-to-top[data-tip]:hover:after,.back-to-top[data-tip]:focus-visible:after{content:attr(data-tip);position:absolute;top:auto;bottom:calc(100% + 8px);right:0;white-space:nowrap;font-size:11px;background:#343434;color:white;padding:6px 8px;border-radius:4px}
+@media(max-width:800px){.back-to-top{bottom:64px;right:12px;width:40px;height:40px}}
+@media(max-width:480px){.back-to-top{bottom:60px}}
 @media print{.book>.signature,.back-to-top{display:none}}
 .bookmarks .bookmark .number{width:20px;font-size:13px;font-weight:500;color:#7b7d73;text-align:left}
 .bookmarks .bookmark .label{font-weight:700;line-height:1.4}
@@ -166,7 +167,8 @@ html{overflow:clip}body{position:fixed;inset:0}
 <main class="book">
 <div class="signature"><h1>吴屿然</h1><p>数据分析与可视化作品集</p></div>
 <nav class="bookmarks" role="tablist" aria-orientation="vertical" aria-label="作品集封面与六个模块"></nav>
-<header class="masthead"><div class="wave" aria-hidden="true"><canvas id="wave"></canvas></div><img class="ornament wave-mark" data-art="wave" alt=""><img class="ornament spark" data-art="spark" alt=""><img class="ornament network" data-art="network" alt=""><button class="icon-button back-to-top" type="button" aria-label="返回顶部" data-tip="返回顶部"><i data-lucide="arrow-up-to-line"></i></button></header>
+<header class="masthead"><div class="wave" aria-hidden="true"><canvas id="wave"></canvas></div><img class="ornament wave-mark" data-art="wave" alt=""><img class="ornament spark" data-art="spark" alt=""><img class="ornament network" data-art="network" alt=""></header>
+<button class="icon-button back-to-top" type="button" aria-label="返回顶部" data-tip="返回顶部"><i data-lucide="arrow-up-to-line"></i></button>
 <div class="pages"></div>
 <footer class="page-footer"><div class="footer-meta"><span>DATA ANALYSIS & VISUALIZATION</span><span>5 组仪表盘 · 12 篇分析报告</span></div><div class="turner"><span class="turner-label"></span><button class="icon-button" id="previous" aria-label="上一页" data-tip="上一页"><i data-lucide="arrow-left"></i></button><span class="current-page" aria-live="polite">01 / 06</span><button class="icon-button" id="next" aria-label="下一页" data-tip="下一页"><i data-lucide="arrow-right"></i></button></div></footer>
 </main>
